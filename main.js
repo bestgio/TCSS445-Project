@@ -17,8 +17,12 @@ const mysql = require('mysql'); // npm install mysql
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.engine('html', require('ejs').renderFile);
 
+// con variable for sql connection
 let con;
 
+/**
+ * Creates a connection.
+ */
 function newConnection() {
     con = mysql.createConnection({
         host: process.env.HOST,
@@ -27,16 +31,24 @@ function newConnection() {
         database: process.env.DATABASE
 });
 }
+
+/**
+ * Closes connection.
+ */
 function closeConnection() {
     con.end();
 }
 
-
-
+/**
+ * Home page
+ */
 app.get('/', (req, res) => {
     res.render(path.join(__dirname + '/index.html'));
 });
 
+/**
+ * GET request for suggestion tab
+ */
 app.get('/suggestions', (req, res) => {
     newConnection();
     var sql = "SELECT * FROM Suggestion;";
@@ -46,17 +58,18 @@ app.get('/suggestions', (req, res) => {
         }
         let sqlRes = "";
         for(i = result.length - 1; i >= 0; i--) {
-
             sqlRes += "<h4>" + result[i].Name + "</h4>";
-            sqlRes += "<p>" + result[i].Comment + "</p> <hr>"
-            
-            
+            sqlRes += "<p>" + result[i].Comment + "</p> <hr>"  
         }
         res.render(path.join(__dirname + '/suggestion.html'), {type:"suggestions", result:sqlRes});
         closeConnection();
     });
 });
 
+/**
+ * POST request for suggestion tab when
+ * user submits a comment
+ */
 app.post('/suggestions', (req, res) => {
     newConnection();
     let name = (req.body.name).substring(0, 99);
@@ -93,6 +106,9 @@ app.post('/suggestions', (req, res) => {
  
 });
 
+/**
+ * GET request for warframe tab
+ */
 app.get('/warframe', (req, res) => {
     newConnection();
     var sql = "SELECT * FROM Warframe;";
@@ -112,6 +128,9 @@ app.get('/warframe', (req, res) => {
     });
 });
 
+/**
+ * POST request for warframe tab
+ */
 app.post('/warframe', (req, res) => {
     newConnection();
     var sql = "SELECT Name, Description, Type FROM Warframe WHERE Name =\"" +
@@ -145,6 +164,9 @@ app.post('/warframe', (req, res) => {
     });
 });
 
+/**
+ * GET request for weapon tab
+ */
 app.get('/weapon', (req, res) => {
     newConnection();
     var sql = "SELECT * FROM Weapon;";
@@ -165,6 +187,9 @@ app.get('/weapon', (req, res) => {
     });
 });
 
+/**
+ * POST request for weapon tab
+ */
 app.post('/weapon', (req, res) => {
     newConnection();
     var sql = "SELECT Name, Description, Type FROM Weapon WHERE Name =\"" +
@@ -197,6 +222,9 @@ app.post('/weapon', (req, res) => {
     });
 });
 
+/**
+ * GET request for archwing tab
+ */
 app.get('/archwing', (req, res) => {
     newConnection();
     var sql = "SELECT * FROM Archwing;";
@@ -217,6 +245,9 @@ app.get('/archwing', (req, res) => {
     });
 });
 
+/**
+ * POST request for archwing
+ */
 app.post('/archwing', (req, res) => {
     newConnection();
     var sql = "SELECT Name, Description, Type FROM Archwing WHERE Name =\"" +
@@ -249,6 +280,9 @@ app.post('/archwing', (req, res) => {
     });
 });
 
+/**
+ * GET request for companion tab
+ */
 app.get('/companion', (req, res) => {
     newConnection();
     var sql = "SELECT * FROM Companion;";
@@ -269,6 +303,10 @@ app.get('/companion', (req, res) => {
     });
 });
 
+/**
+ * POST request for companion
+ * This provides link handling
+ */
 app.post('/companion', (req, res) => {
     newConnection();
     var sql = "SELECT Name, Description, Type FROM Companion WHERE Name =\"" +
@@ -301,6 +339,9 @@ app.post('/companion', (req, res) => {
     });
 });
 
+/**
+ * GET request for relic
+ */
 app.get('/relic', (req, res) => {
     newConnection();
     var sql = "SELECT * FROM Relic;";
@@ -321,6 +362,10 @@ app.get('/relic', (req, res) => {
     });
 });
 
+/**
+ * POST request for relic
+ * This provides link handling
+ */
 app.post('/relic', (req, res) => {
     newConnection();
     var sql = "SELECT * FROM Location WHERE RelicName =\"" + req.body.name + "\";";
@@ -340,6 +385,10 @@ app.post('/relic', (req, res) => {
     });
 });
 
+/**
+ * POST search request to 
+ * handle searching feature
+ */
 app.post('/search', (req, res) => {
     newConnection();
     var search = req.body.search;
@@ -374,10 +423,17 @@ app.post('/search', (req, res) => {
     });
 });
 
+/**
+ * Runs the server
+ */
 app.listen(process.env.PORT || 5000, () => {
     console.log("Server up and running on port: " + (process.env.PORT || 5000));
 });
 
+/**
+ * Specifies what item type the user just clicked. 
+ * @param {resulting query} result
+ */
 function determine(result) {
     return new Promise(function(resolve, reject) {
         let sql = "SELECT * FROM Warframe WHERE Name =\"" + result + "\";";
