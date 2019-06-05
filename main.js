@@ -33,6 +33,7 @@ con.connect(function(error) {
 
 
 app.get('/', (req, res) => {
+    con.end();
     console.log("im here");
     res.render(path.join(__dirname + '/index.html'));
 });
