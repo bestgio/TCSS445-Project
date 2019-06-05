@@ -17,22 +17,17 @@ const mysql = require('mysql'); // npm install mysql
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.engine('html', require('ejs').renderFile);
 
-var con = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.USERNAME,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE
+let con;
+function newConnection() {
+    con = mysql.createConnection({
+        host: process.env.HOST,
+        user: process.env.USERNAME,
+        password: process.env.PASSWORD,
+        database: process.env.DATABASE
 });
+}
 
 
-con.connect(function(error) {
-    if (error) {
-        throw error;
-    }
-    console.log("Connected!");
-});
-
-con.end();
 
 app.get('/', (req, res) => {
     console.log("im here");
@@ -41,7 +36,7 @@ app.get('/', (req, res) => {
 
 app.get('/warframe', (req, res) => {
     var sql = "SELECT * FROM Warframe;";
-    con.connect();
+    con.newConnection();
     con.query(sql, function(error, result) {
         if (error) {
             throw error;
