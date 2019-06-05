@@ -34,16 +34,7 @@ function closeConnection() {
 
 
 app.get('/', (req, res) => {
-    newConnection();
-    con.query("INSERT INTO Suggestion VALUES (\"test1\", \"get\");", function(error, result) {
-        if (error) {
-            throw error;
-        }
-        console.log(result);
-        res.render(path.join(__dirname + '/index.html'));
-        closeConnection();
-    });
-    
+    res.render(path.join(__dirname + '/index.html'));
 });
 
 app.get('/suggestions', (req, res) => {
@@ -76,26 +67,7 @@ app.post('/suggestions', (req, res) => {
             throw error;
         }
         sqlRes = result[0];
-        
-    });
-    var sql2 = "SELECT * FROM warframe_component WHERE Name =\"" + req.body.name + "\";";
-    let sqlRes2 = "";
-    con.query(sql2, function(error, result) {
-        if (error) {
-            throw error;
-        }
-        
-        for (i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/relic\" method=\"POST\">" + 
-            " <input type=\"submit\" name=\"name\" value=\"" + result[i].RelicName + "\">" +
-            " </form>";
-            sqlRes2 += "<p>" + result[i].ComponentName + ": " + link +  "</p>";
-        }
-        res.render(path.join(__dirname + '/info.html'), {name:sqlRes.Name, 
-                                                                type:sqlRes.Type, 
-                                                                description:sqlRes.Description,
-                                                                component:sqlRes2});
-        closeConnection();
+        res.render(path.join(__dirname + '/suggestion.html'), {type:"suggestions", result:sqlRes});
     });
 });
 
@@ -106,14 +78,21 @@ app.get('/warframe', (req, res) => {
         if (error) {
             throw error;
         }
+    });
+    var sql2 = "SELECT * FROM Suggestion;";
+    con.query(sql, function(error, result) {
+        if (error) {
+            throw error;
+        }
         let sqlRes = "";
         for(i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/warframe\" method=\"POST\">" + 
-            " <input type=\"submit\" name=\"name\" value=\"" + result[i].Name + "\">" +
-            " </form>";
-            sqlRes += link + "<br />";
+
+            sqlRes += "<h3>" + result[i].Name + "</h3>";
+            sqlRes += "<p>" + result[i].Comment + "</p> <hr>"
+            
+            
         }
-        res.render(path.join(__dirname + '/list.html'), {type:"Warframes", result:sqlRes});
+        res.render(path.join(__dirname + '/suggestion.html'), {type:"suggestions", result:sqlRes});
         closeConnection();
     });
 });
