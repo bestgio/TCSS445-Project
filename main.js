@@ -24,6 +24,7 @@ var con = mysql.createConnection({
     database: process.env.DATABASE
 });
 
+
 con.connect(function(error) {
     if (error) {
         throw error;
@@ -31,28 +32,29 @@ con.connect(function(error) {
     console.log("Connected!");
 });
 
+con.end();
 
 app.get('/', (req, res) => {
-    con.end();
     console.log("im here");
     res.render(path.join(__dirname + '/index.html'));
 });
 
 app.get('/warframe', (req, res) => {
     var sql = "SELECT * FROM Warframe;";
-    
+    con.connect();
     con.query(sql, function(error, result) {
         if (error) {
             throw error;
         }
         let sqlRes = "";
         for(i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/warframe\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/warframe\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].Name + "\">" +
             " </form>";
             sqlRes += link + "<br />";
         }
         res.render(path.join(__dirname + '/list.html'), {type:"Warframes", result:sqlRes});
+        con.end();
     });
 });
 
@@ -75,7 +77,7 @@ app.post('/warframe', (req, res) => {
         }
         
         for (i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/relic\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/relic\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].RelicName + "\">" +
             " </form>";
             sqlRes2 += "<p>" + result[i].ComponentName + ": " + link +  "</p>";
@@ -96,7 +98,7 @@ app.get('/weapon', (req, res) => {
         }
         let sqlRes = "";
         for(i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/weapon\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/weapon\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].Name + "\">" +
             " </form>";
             sqlRes += link + "<br />";
@@ -123,7 +125,7 @@ app.post('/weapon', (req, res) => {
             throw error;
         }
         for (i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/relic\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/relic\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].RelicName + "\">" +
             " </form>";
             sqlRes2 += "<p>" + result[i].ComponentName + ": " + link +  "</p>";
@@ -144,7 +146,7 @@ app.get('/archwing', (req, res) => {
         }
         let sqlRes = "";
         for(i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/archwing\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/archwing\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].Name + "\">" +
             " </form>";
             sqlRes += link + "<br />";
@@ -171,7 +173,7 @@ app.post('/archwing', (req, res) => {
             throw error;
         }
         for (i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/relic\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/relic\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].RelicName + "\">" +
             " </form>";
             sqlRes2 += "<p>" + result[i].ComponentName + ": " + link +  "</p>";
@@ -192,7 +194,7 @@ app.get('/companion', (req, res) => {
         }
         let sqlRes = "";
         for(i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/companion\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/companion\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].Name + "\">" +
             " </form>";
             sqlRes += link + "<br />";
@@ -219,7 +221,7 @@ app.post('/companion', (req, res) => {
             throw error;
         }
         for (i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/relic\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/relic\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].RelicName + "\">" +
             " </form>";
             sqlRes2 += "<p>" + result[i].ComponentName + ": " + link +  "</p>";
@@ -240,7 +242,7 @@ app.get('/relic', (req, res) => {
         }
         let sqlRes = "";
         for(i = 0; i < result.length; i++) {
-            let link = "<form action=\"http://localhost:5000/relic\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/relic\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].RelicName + "\">" +
             " </form>";
             sqlRes += link + "<br />";
@@ -288,7 +290,7 @@ app.post('/search', (req, res) => {
         let sqlRes = "";
         for(i = 0; i < result.length; i++) {
             let type = await determine(result[i].Name);
-            let link = "<form action=\"http://localhost:5000/" + type + "\" method=\"POST\">" + 
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/" + type + "\" method=\"POST\">" + 
             " <input type=\"submit\" name=\"name\" value=\"" + result[i].Name + "\">" +
             " </form>";
             sqlRes += link + "<br />";
