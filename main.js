@@ -35,7 +35,7 @@ function closeConnection() {
 
 app.get('/', (req, res) => {
     newConnection();
-    con.query("INSERT INTO Suggestions VALUES (\"test1\", \"get\");", function(error, result) {
+    con.query("INSERT INTO Suggestion VALUES (\"test1\", \"get\");", function(error, result) {
         if (error) {
             throw error;
         }
