@@ -37,6 +37,26 @@ app.get('/', (req, res) => {
     res.render(path.join(__dirname + '/index.html'));
 });
 
+app.get('/suggestions', (req, res) => {
+    newConnection();
+    var sql = "SELECT * FROM Suggestion;";
+    con.query(sql, function(error, result) {
+        if (error) {
+            throw error;
+        }
+        let sqlRes = "";
+        for(i = 0; i < result.length; i++) {
+
+            sqlRes += "<h3>" + result[i].Name + "</h3>";
+            sqlRes += "<p>" + result[i].Comment + "</p>"
+            
+            
+        }
+        res.render(path.join(__dirname + '/list.html'), {type:"suggestions", result:sqlRes});
+        closeConnection();
+    });
+});
+
 app.get('/warframe', (req, res) => {
     newConnection();
     var sql = "SELECT * FROM Warframe;";
