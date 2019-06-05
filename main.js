@@ -47,7 +47,7 @@ app.get('/suggestions', (req, res) => {
         let sqlRes = "";
         for(i = result.length - 1; i >= 0; i--) {
 
-            sqlRes += "<h3>" + result[i].Name + "</h3>";
+            sqlRes += "<h4>" + result[i].Name + "</h4>";
             sqlRes += "<p>" + result[i].Comment + "</p> <hr>"
             
             
@@ -82,7 +82,7 @@ app.post('/suggestions', (req, res) => {
         let sqlRes = "";
         for(i = result.length - 1; i >= 0; i--) {
 
-            sqlRes += "<h3>" + result[i].Name + "</h3>";
+            sqlRes += "<h4>" + result[i].Name + "</h4>";
             sqlRes += "<p>" + result[i].Comment + "</p> <hr>"
             
             
