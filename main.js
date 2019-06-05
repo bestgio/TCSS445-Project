@@ -18,10 +18,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('html', require('ejs').renderFile);
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "password",
-    database: "Tang_Giovanni_db"
+    host: process.env.HOST,
+    user: process.env.USERNAME,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE
 });
 
 con.connect(function(error) {
