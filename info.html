@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Warframe App</title>
+</head>
+
+<header>
+    <h1>Warframe App</h1>
+    <a href="http://localhost:5000/">Home</a> 
+    <a href="http://localhost:5000/warframe">Warframe</a> 
+    <a href="http://localhost:5000/weapon">Weapon</a> 
+    <a href="http://localhost:5000/archwing">Archwing</a> 
+    <a href="http://localhost:5000/companion">Companion</a> 
+    <a href="http://localhost:5000/relic">Relic</a> 
+</header>
+
+<body>
+    <form action="http://localhost:5000/search" method="POST">
+        Search: <input type="text" name="search" placeholder="Search Here bitch"><br>
+        <input type="submit" value="nutt">
+    </form>
+
+    <h3><%- name %></h3>
+
+    <h4>Type</h4>
+    <p><%- type%></p>
+
+    <h4>Description</h4>
+    <p><%- description%></p>
+    
+    <h4>Components</h4>
+    <p><%- component%></p>
+</body>
+
+</html>
