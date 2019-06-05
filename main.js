@@ -34,7 +34,16 @@ function closeConnection() {
 
 
 app.get('/', (req, res) => {
-    res.render(path.join(__dirname + '/index.html'));
+    newConnection();
+    con.query("INSERT INTO Suggestions VALUES (\"test1\", \"get\");", function(error, result) {
+        if (error) {
+            throw error;
+        }
+        console.log(result);
+        res.render(path.join(__dirname + '/index.html'));
+        closeConnection();
+    });
+    
 });
 
 app.get('/suggestions', (req, res) => {
@@ -53,6 +62,39 @@ app.get('/suggestions', (req, res) => {
             
         }
         res.render(path.join(__dirname + '/suggestion.html'), {type:"suggestions", result:sqlRes});
+        closeConnection();
+    });
+});
+
+app.post('/suggestions', (req, res) => {
+    newConnection();
+    var sql = "INSERT INTO Suggestion VALUES (\"" + req.body.name + "\"," +
+                " \"" + req.body.feedback + "\");";
+    let sqlRes;
+    con.query(sql, function(error, result) {
+        if (error) {
+            throw error;
+        }
+        sqlRes = result[0];
+        
+    });
+    var sql2 = "SELECT * FROM warframe_component WHERE Name =\"" + req.body.name + "\";";
+    let sqlRes2 = "";
+    con.query(sql2, function(error, result) {
+        if (error) {
+            throw error;
+        }
+        
+        for (i = 0; i < result.length; i++) {
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/relic\" method=\"POST\">" + 
+            " <input type=\"submit\" name=\"name\" value=\"" + result[i].RelicName + "\">" +
+            " </form>";
+            sqlRes2 += "<p>" + result[i].ComponentName + ": " + link +  "</p>";
+        }
+        res.render(path.join(__dirname + '/info.html'), {name:sqlRes.Name, 
+                                                                type:sqlRes.Type, 
+                                                                description:sqlRes.Description,
+                                                                component:sqlRes2});
         closeConnection();
     });
 });
