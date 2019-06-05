@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 
 app.get('/warframe', (req, res) => {
     var sql = "SELECT * FROM Warframe;";
-    con.newConnection();
+    newConnection();
     con.query(sql, function(error, result) {
         if (error) {
             throw error;
