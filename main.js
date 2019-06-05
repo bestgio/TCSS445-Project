@@ -59,8 +59,8 @@ app.get('/suggestions', (req, res) => {
 
 app.post('/suggestions', (req, res) => {
     newConnection();
-    let name = req.body.name;
-    let feedback = req.body.feedback;
+    let name = (req.body.name).substring(0, 99);
+    let feedback = (req.body.feedback).substring(0, 999);
     if (name.length == 0) {
         name = "user";
     }
