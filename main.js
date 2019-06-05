@@ -82,6 +82,7 @@ app.post('/suggestions', (req, res) => {
         }
         res.render(path.join(__dirname + '/suggestion.html'), {type:"suggestions", result:sqlRes});
         closeConnection();
+    });
  
 });
 
