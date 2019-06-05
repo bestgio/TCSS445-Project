@@ -34,7 +34,6 @@ function closeConnection() {
 
 
 app.get('/', (req, res) => {
-    console.log("im here");
     res.render(path.join(__dirname + '/index.html'));
 });
 
