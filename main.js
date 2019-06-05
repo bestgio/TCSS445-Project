@@ -58,7 +58,7 @@ app.get('/warframe', (req, res) => {
 });
 
 app.post('/warframe', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT Name, Description, Type FROM Warframe WHERE Name =\"" +
                 req.body.name + "\";";
     let sqlRes;
@@ -91,7 +91,7 @@ app.post('/warframe', (req, res) => {
 });
 
 app.get('/weapon', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT * FROM Weapon;";
     
     con.query(sql, function(error, result) {
@@ -111,7 +111,7 @@ app.get('/weapon', (req, res) => {
 });
 
 app.post('/weapon', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT Name, Description, Type FROM Weapon WHERE Name =\"" +
                 req.body.name + "\";";
     let sqlRes;
@@ -143,7 +143,7 @@ app.post('/weapon', (req, res) => {
 });
 
 app.get('/archwing', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT * FROM Archwing;";
     
     con.query(sql, function(error, result) {
@@ -163,7 +163,7 @@ app.get('/archwing', (req, res) => {
 });
 
 app.post('/archwing', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT Name, Description, Type FROM Archwing WHERE Name =\"" +
                 req.body.name + "\";";
     let sqlRes;
@@ -195,7 +195,7 @@ app.post('/archwing', (req, res) => {
 });
 
 app.get('/companion', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT * FROM Companion;";
     
     con.query(sql, function(error, result) {
@@ -215,7 +215,7 @@ app.get('/companion', (req, res) => {
 });
 
 app.post('/companion', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT Name, Description, Type FROM Companion WHERE Name =\"" +
                 req.body.name + "\";";
     let sqlRes;
@@ -247,7 +247,7 @@ app.post('/companion', (req, res) => {
 });
 
 app.get('/relic', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT * FROM Relic;";
     
     con.query(sql, function(error, result) {
@@ -267,7 +267,7 @@ app.get('/relic', (req, res) => {
 });
 
 app.post('/relic', (req, res) => {
-    createConnection();
+    newConnection();
     var sql = "SELECT * FROM Location WHERE RelicName =\"" + req.body.name + "\";";
     let sqlRes = "";
     con.query(sql, function(error, result) {
@@ -286,7 +286,7 @@ app.post('/relic', (req, res) => {
 });
 
 app.post('/search', (req, res) => {
-    createConnection();
+    newConnection();
     var search = req.body.search;
     var sql = "SELECT Name" + 
     " FROM( " + 
