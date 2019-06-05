@@ -45,7 +45,7 @@ app.get('/suggestions', (req, res) => {
             throw error;
         }
         let sqlRes = "";
-        for(i = 0; i < result.length; i++) {
+        for(i = result.length - 1; i >= 0; i++) {
 
             sqlRes += "<h3>" + result[i].Name + "</h3>";
             sqlRes += "<p>" + result[i].Comment + "</p> <hr>"
@@ -59,21 +59,28 @@ app.get('/suggestions', (req, res) => {
 
 app.post('/suggestions', (req, res) => {
     newConnection();
-    var sql = "INSERT INTO Suggestion VALUES (\"" + req.body.name + "\"," +
-                " \"" + req.body.feedback + "\");";
-    let sqlRes;
-    con.query(sql, function(error, result) {
-        if (error) {
-            throw error;
-        }
-    });
+    let name = req.body.name;
+    let feedback = req.body.feedback;
+    if (name.length == 0) {
+        name = "user";
+    }
+    if (feedback.length != 0) {
+        var sql = "INSERT INTO Suggestion VALUES (\"" + name + "\"," +
+        " \"" + feedback + "\");";
+        con.query(sql, function(error, result) {
+            if (error) {
+                throw error;
+            }
+        });
+    }
+    
     var sql = "SELECT * FROM Suggestion;";
     con.query(sql, function(error, result) {
         if (error) {
             throw error;
         }
         let sqlRes = "";
-        for(i = 0; i < result.length; i++) {
+        for(i = result.length - 1; i >= 0; i++) {
 
             sqlRes += "<h3>" + result[i].Name + "</h3>";
             sqlRes += "<p>" + result[i].Comment + "</p> <hr>"
