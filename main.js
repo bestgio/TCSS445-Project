@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('html', require('ejs').renderFile);
 
 let con;
+
 function newConnection() {
     con = mysql.createConnection({
         host: process.env.HOST,
@@ -25,6 +26,9 @@ function newConnection() {
         password: process.env.PASSWORD,
         database: process.env.DATABASE
 });
+}
+function closeConnection() {
+    con.end();
 }
 
 
@@ -35,8 +39,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/warframe', (req, res) => {
-    var sql = "SELECT * FROM Warframe;";
     newConnection();
+    var sql = "SELECT * FROM Warframe;";
     con.query(sql, function(error, result) {
         if (error) {
             throw error;
@@ -49,11 +53,12 @@ app.get('/warframe', (req, res) => {
             sqlRes += link + "<br />";
         }
         res.render(path.join(__dirname + '/list.html'), {type:"Warframes", result:sqlRes});
-        con.end();
+        closeConnection();
     });
 });
 
 app.post('/warframe', (req, res) => {
+    createConnection();
     var sql = "SELECT Name, Description, Type FROM Warframe WHERE Name =\"" +
                 req.body.name + "\";";
     let sqlRes;
@@ -81,10 +86,12 @@ app.post('/warframe', (req, res) => {
                                                                 type:sqlRes.Type, 
                                                                 description:sqlRes.Description,
                                                                 component:sqlRes2});
+        closeConnection();
     });
 });
 
 app.get('/weapon', (req, res) => {
+    createConnection();
     var sql = "SELECT * FROM Weapon;";
     
     con.query(sql, function(error, result) {
@@ -99,10 +106,12 @@ app.get('/weapon', (req, res) => {
             sqlRes += link + "<br />";
         }
         res.render(path.join(__dirname + '/list.html'), {type:"Weapons", result:sqlRes});
+        closeConnection();
     });
 });
 
 app.post('/weapon', (req, res) => {
+    createConnection();
     var sql = "SELECT Name, Description, Type FROM Weapon WHERE Name =\"" +
                 req.body.name + "\";";
     let sqlRes;
@@ -129,10 +138,12 @@ app.post('/weapon', (req, res) => {
                                                                 type:sqlRes.Type, 
                                                                 description:sqlRes.Description,
                                                                 component:sqlRes2});
+        closeConnection();
     });
 });
 
 app.get('/archwing', (req, res) => {
+    createConnection();
     var sql = "SELECT * FROM Archwing;";
     
     con.query(sql, function(error, result) {
@@ -147,10 +158,12 @@ app.get('/archwing', (req, res) => {
             sqlRes += link + "<br />";
         }
         res.render(path.join(__dirname + '/list.html'), {type:"Archwings", result:sqlRes});
+        closeConnection();
     });
 });
 
 app.post('/archwing', (req, res) => {
+    createConnection();
     var sql = "SELECT Name, Description, Type FROM Archwing WHERE Name =\"" +
                 req.body.name + "\";";
     let sqlRes;
@@ -177,10 +190,12 @@ app.post('/archwing', (req, res) => {
                                                                 type:sqlRes.Type, 
                                                                 description:sqlRes.Description,
                                                                 component:sqlRes2});
+        closeConnection();
     });
 });
 
 app.get('/companion', (req, res) => {
+    createConnection();
     var sql = "SELECT * FROM Companion;";
     
     con.query(sql, function(error, result) {
@@ -195,10 +210,12 @@ app.get('/companion', (req, res) => {
             sqlRes += link + "<br />";
         }
         res.render(path.join(__dirname + '/list.html'), {type:"Companions", result:sqlRes});
+        closeConnection();
     });
 });
 
 app.post('/companion', (req, res) => {
+    createConnection();
     var sql = "SELECT Name, Description, Type FROM Companion WHERE Name =\"" +
                 req.body.name + "\";";
     let sqlRes;
@@ -225,10 +242,12 @@ app.post('/companion', (req, res) => {
                                                                 type:sqlRes.Type, 
                                                                 description:sqlRes.Description,
                                                                 component:sqlRes2});
+        closeConnection();
     });
 });
 
 app.get('/relic', (req, res) => {
+    createConnection();
     var sql = "SELECT * FROM Relic;";
     
     con.query(sql, function(error, result) {
@@ -243,10 +262,12 @@ app.get('/relic', (req, res) => {
             sqlRes += link + "<br />";
         }
         res.render(path.join(__dirname + '/list.html'), {type:"Relics", result:sqlRes});
+        closeConnection();
     });
 });
 
 app.post('/relic', (req, res) => {
+    createConnection();
     var sql = "SELECT * FROM Location WHERE RelicName =\"" + req.body.name + "\";";
     let sqlRes = "";
     con.query(sql, function(error, result) {
@@ -260,10 +281,12 @@ app.post('/relic', (req, res) => {
                                                                 tier:sqlRes.Tier,
                                                                 rotation:sqlRes.Rotation,
                                                                 chance:sqlRes.Chance});
+        closeConnection();
     });
 });
 
 app.post('/search', (req, res) => {
+    createConnection();
     var search = req.body.search;
     var sql = "SELECT Name" + 
     " FROM( " + 
@@ -292,6 +315,7 @@ app.post('/search', (req, res) => {
         }
 
         res.render(path.join(__dirname + '/search.html',), {result:sqlRes, search:search});
+        closeConnection();
     });
 });
 
