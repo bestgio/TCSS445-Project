@@ -66,20 +66,8 @@ app.post('/suggestions', (req, res) => {
         if (error) {
             throw error;
         }
-        sqlRes = result[0];
-        res.render(path.join(__dirname + '/suggestion.html'), {type:"suggestions", result:sqlRes});
     });
-});
-
-app.get('/warframe', (req, res) => {
-    newConnection();
-    var sql = "SELECT * FROM Warframe;";
-    con.query(sql, function(error, result) {
-        if (error) {
-            throw error;
-        }
-    });
-    var sql2 = "SELECT * FROM Suggestion;";
+    var sql = "SELECT * FROM Suggestion;";
     con.query(sql, function(error, result) {
         if (error) {
             throw error;
@@ -93,6 +81,25 @@ app.get('/warframe', (req, res) => {
             
         }
         res.render(path.join(__dirname + '/suggestion.html'), {type:"suggestions", result:sqlRes});
+        closeConnection();
+ 
+});
+
+app.get('/warframe', (req, res) => {
+    newConnection();
+    var sql = "SELECT * FROM Warframe;";
+    con.query(sql, function(error, result) {
+        if (error) {
+            throw error;
+        }
+        let sqlRes = "";
+        for(i = 0; i < result.length; i++) {
+            let link = "<form action=\"http://bestgio-445-project.herokuapp.com/warframe\" method=\"POST\">" + 
+            " <input type=\"submit\" name=\"name\" value=\"" + result[i].Name + "\">" +
+            " </form>";
+            sqlRes += link + "<br />";
+        }
+        res.render(path.join(__dirname + '/list.html'), {type:"Warframes", result:sqlRes});
         closeConnection();
     });
 });
