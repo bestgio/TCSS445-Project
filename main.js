@@ -297,8 +297,8 @@ app.post('/search', (req, res) => {
     });
 });
 
-app.listen(5000, () => {
-    console.log("Server up and running on port: " + 5000);
+app.listen(process.env.PORT || 5000, () => {
+    console.log("Server up and running on port: " + (process.env.PORT || 5000));
 });
 
 function determine(result) {
