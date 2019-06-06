@@ -112,7 +112,7 @@ app.post('/suggestions', (req, res) => {
         let sqlRes = "";
         for(i = result.length - 1; i >= 0; i--) {
 
-            sqlRes += "<h4>" + result[i].Name + result[i].Time + "</h4>";
+            sqlRes += "<h4>" + result[i].Name + " | " + result[i].Time + "</h4>";
             sqlRes += "<p>" + result[i].Comment + "</p> <hr>"
             
             
