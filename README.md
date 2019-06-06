@@ -1,3 +1,5 @@
+http://bestgio-445-project.herokuapp.com/
+
 This is a companion application geared towards the free to play game Warframe. This database application primarily serves as a guide for both new and old players on acquiring whichever items of their choosing. 
 
 It is hosted on a Heroku server so anyone with a web browser would be able to view this database application. Note: since this application is implemented using the free tier service from Heroku, there maybe an approximately 30 second delay in first loading the application if the application is inactive within a short amount of time!
