@@ -69,7 +69,8 @@ app.get('/suggestions', (req, res) => {
         let sqlRes = "";
         for(i = result.length - 1; i >= 0; i--) {
             sqlRes += "<h4>" + result[i].Name + "</h4>";
-            sqlRes += "<p>" + result[i].Comment + "</p> <hr>"  
+            sqlRes += "<p>" + result[i].Time + "</p>";
+            sqlRes += "<p>" + result[i].Comment + "</p> <hr>" 
         }
         res.render(path.join(__dirname + '/suggestion.html'), {type:"suggestions", result:sqlRes});
         closeConnection();
@@ -92,9 +93,7 @@ app.post('/suggestions', (req, res) => {
         let d = date.getDate();
         let m = month[date.getMonth()];
         let y = date.getFullYear();
-        let h = date.getHours();
-        let min = date.getMinutes();
-        let time = m + " " + d + ", " + y + " " + h + ":" + min;
+        let time = m + " " + d + ", " + y;
         var sql = "INSERT INTO Suggestion VALUES (\"" + name + "\"," +
         " \"" + feedback + "\", \"" + time + "\" );";
         con.query(sql, function(error, result) {
