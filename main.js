@@ -40,6 +40,16 @@ function closeConnection() {
 }
 
 /**
+ * Constant array of month names
+ */
+const month = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+];
+
+/**
  * Home page
  */
 app.get('/', (req, res) => {
@@ -78,8 +88,15 @@ app.post('/suggestions', (req, res) => {
         name = "user";
     }
     if (feedback.length != 0) {
+        let date = new Date();
+        let d = date.getDate();
+        let m = month[date.getMonth()];
+        let y = date.getFullYear();
+        let h = date.getHours();
+        let min = date.getMinutes();
+        let time = m + " " + d + ", " + y + " " + h + ":" + min;
         var sql = "INSERT INTO Suggestion VALUES (\"" + name + "\"," +
-        " \"" + feedback + "\");";
+        " \"" + feedback + "\", \"" + time + "\" );";
         con.query(sql, function(error, result) {
             if (error) {
                 throw error;
